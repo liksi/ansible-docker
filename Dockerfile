@@ -28,7 +28,7 @@ RUN echo "===> Adding Ansible's PPA..."  && \
     \
     \
     echo "===> Installing Ansible..."  && \
-    apt-get install -y ansible=2.8.2-1ppa~bionic  && \
+    apt-get install -y ansible=2.8.5-1ppa~bionic  && \
     \
     \
     echo "===> Installing handy tools (not absolutely required)..."  && \
