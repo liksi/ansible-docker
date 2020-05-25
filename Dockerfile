@@ -11,7 +11,7 @@ FROM ubuntu:18.04
 
 LABEL "maintainer"="liksi <ops@liksi.fr>"
 
-ARG ANSIBLE_VERSION=2.9.6-1ppa~bionic
+ARG ANSIBLE_VERSION=2.9.9-1ppa~bionic
 
 RUN echo "===> Adding Python 3..." && \
     apt-get update && \
