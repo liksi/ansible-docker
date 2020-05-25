@@ -9,8 +9,9 @@
 # pull base image
 FROM ubuntu:18.04
 
-MAINTAINER Liksi <info@liksi.fr>
+LABEL "maintainer"="liksi <ops@liksi.fr>"
 
+ARG ANSIBLE_VERSION=2.9.6-1ppa~bionic
 
 RUN echo "===> Adding Python 3..." && \
     apt-get update && \
@@ -28,12 +29,12 @@ RUN echo "===> Adding Ansible's PPA..."  && \
     \
     \
     echo "===> Installing Ansible..."  && \
-    apt-get install -y ansible=2.9.6-1ppa~bionic  && \
+    apt-get install -y ansible=${ANSIBLE_VERSION}  && \
     \
     \
     echo "===> Installing handy tools (not absolutely required)..."  && \
     pip install --upgrade pycrypto pywinrm     && \
-    apt-get install -y sshpass openssh-client  && \
+    apt-get install -y sshpass openssh-client git && \
     \
     \
     echo "===> Removing Ansible PPA..."  && \
