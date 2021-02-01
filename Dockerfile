@@ -34,7 +34,7 @@ RUN echo "===> Adding Ansible's PPA..."  && \
     \
     echo "===> Installing handy tools (not absolutely required)..."  && \
     pip install --upgrade pycrypto pywinrm     && \
-    apt-get install -y sshpass openssh-client git && \
+    apt-get install -y sshpass openssh-client git curl jq && \
     \
     \
     echo "===> Removing Ansible PPA..."  && \
