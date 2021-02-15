@@ -7,46 +7,31 @@
 
 
 # pull base image
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 LABEL "maintainer"="liksi <ops@liksi.fr>"
 
-ARG ANSIBLE_VERSION=2.9.17-1ppa~bionic
+ARG ANSIBLE_VERSION=2.9.17
 
-ENV TZ=Europe/Kiev
+ENV TZ=Europe/Paris
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN echo "===> Adding Python 3..." && \
-    apt-get update && \
-    apt-get install -y python3-pip python3-dev && \
-    cd /usr/local/bin && \
-    ln -s /usr/bin/python3 python && \
-    pip3 install --upgrade pip
-
 RUN echo "===> Adding Ansible's PPA..."  && \
-    apt-get update  &&  apt-get install -y gnupg2    && \
-    echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main" | tee /etc/apt/sources.list.d/ansible.list           && \
-    echo "deb-src http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main" | tee -a /etc/apt/sources.list.d/ansible.list    && \
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 7BB9C367    && \
-    DEBIAN_FRONTEND=noninteractive  apt-get update  && \
-    \
-    \
-    echo "===> Installing Ansible..."  && \
-    apt-get install -y ansible=${ANSIBLE_VERSION}  && \
-    \
-    \
+    apt-get update && \
+    apt-get install --no-install-recommends -y python3-pip python3-dev sshpass openssh-client git curl jq build-essential && \
+    pip3 install --upgrade ansible==${ANSIBLE_VERSION} && \
     echo "===> Installing handy tools (not absolutely required)..."  && \
     pip3 install --upgrade pycrypto pywinrm boto3 && \
-    apt-get install -y sshpass openssh-client git curl jq && \
-    \
-    \
-    echo "===> Removing Ansible PPA..."  && \
-    rm -rf /var/lib/apt/lists/*  /etc/apt/sources.list.d/ansible.list  && \
-    \
-    \
     echo "===> Adding hosts for convenience..."  && \
-    echo 'localhost' > /etc/ansible/hosts
-
+    mkdir -p /etc/ansible && \
+    touch /etc/ansible/hosts && \
+    echo 'localhost' > /etc/ansible/hosts && \
+    echo "===> Clean up..." && \
+    apt-get clean  && \
+    rm -rf /var/lib/apt/lists/*
 
 # default command: display Ansible version
 CMD [ "ansible-playbook", "--version" ]
+
+
+
