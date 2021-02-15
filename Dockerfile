@@ -13,15 +13,12 @@ LABEL "maintainer"="liksi <ops@liksi.fr>"
 
 ARG ANSIBLE_VERSION=2.9.17
 
-ENV TZ=Europe/Paris
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
 RUN echo "===> Adding Ansible's PPA..."  && \
     apt-get update && \
     apt-get install --no-install-recommends -y python3-pip python3-dev sshpass openssh-client git curl jq build-essential && \
     pip3 install --upgrade ansible==${ANSIBLE_VERSION} && \
     echo "===> Installing handy tools (not absolutely required)..."  && \
-    pip3 install --upgrade pycrypto pywinrm boto3 && \
+    pip3 install --upgrade pycrypto pywinrm && \
     echo "===> Adding hosts for convenience..."  && \
     mkdir -p /etc/ansible && \
     touch /etc/ansible/hosts && \
