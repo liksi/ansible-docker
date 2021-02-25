@@ -11,7 +11,7 @@ FROM ubuntu:20.04
 
 LABEL "maintainer"="liksi <ops@liksi.fr>"
 
-ARG ANSIBLE_VERSION=2.9.17
+ARG ANSIBLE_VERSION=3.0.0
 
 RUN echo "===> Adding Ansible's PPA..."  && \
     apt-get update && \
