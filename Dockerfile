@@ -1,4 +1,4 @@
-# Dockerfile for building Ansible image for Ubuntu 18.04 (Bionic), with as few additional software as possible.
+# Dockerfile for building Ansible image for Ubuntu, with as few additional software as possible.
 #
 # @see https://launchpad.net/~ansible/+archive/ubuntu/ansible
 #
@@ -11,11 +11,11 @@ FROM ubuntu:20.04
 
 LABEL "maintainer"="liksi <ops@liksi.fr>"
 
-ARG ANSIBLE_VERSION=3.0.0
+ARG ANSIBLE_VERSION=5.10.0
 
 RUN echo "===> Adding Ansible's PPA..."  && \
     apt-get update && \
-    apt-get install --no-install-recommends -y python3-pip python3-dev sshpass openssh-client git curl jq build-essential && \
+    apt-get install --no-install-recommends -y gnupg2 python3-pip python3-dev sshpass openssh-client git curl jq build-essential && \
     pip3 install --upgrade ansible==${ANSIBLE_VERSION} && \
     echo "===> Installing handy tools (not absolutely required)..."  && \
     pip3 install --upgrade pycrypto pywinrm && \
@@ -25,7 +25,8 @@ RUN echo "===> Adding Ansible's PPA..."  && \
     echo 'localhost' > /etc/ansible/hosts && \
     echo "===> Clean up..." && \
     apt-get clean  && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /root/.cache/pip
 
 # default command: display Ansible version
 CMD [ "ansible-playbook", "--version" ]
