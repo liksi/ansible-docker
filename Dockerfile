@@ -7,11 +7,11 @@
 
 
 # pull base image
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 LABEL "maintainer"="liksi <ops@liksi.fr>"
 
-ARG ANSIBLE_VERSION=5.10.0
+ARG ANSIBLE_VERSION=6.2.0
 
 RUN echo "===> Adding Ansible's PPA..."  && \
     apt-get update && \
