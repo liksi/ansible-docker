@@ -16,9 +16,10 @@ ARG ANSIBLE_VERSION=10.2.0
 RUN echo "===> Adding Ansible's PPA..."  && \
     apt-get update && \
     apt-get install --no-install-recommends -y gnupg2 python3-pip python3-dev sshpass openssh-client git curl jq build-essential && \
+    rm -rf /usr/lib/python3.12/EXTERNALLY-MANAGED && \
     pip3 install --upgrade ansible==${ANSIBLE_VERSION} && \
     echo "===> Installing handy tools (not absolutely required)..."  && \
-    pip3 install --upgrade pycrypto pywinrm && \
+    pip3 install --upgrade pycrypto pywinrm ansible-core && \
     echo "===> Adding hosts for convenience..."  && \
     mkdir -p /etc/ansible && \
     touch /etc/ansible/hosts && \
@@ -27,6 +28,8 @@ RUN echo "===> Adding Ansible's PPA..."  && \
     apt-get clean  && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /root/.cache/pip
+
+ENV ANSIBLE_HOST_KEY_CHECKING=false
 
 # default command: display Ansible version
 CMD [ "ansible-playbook", "--version" ]
